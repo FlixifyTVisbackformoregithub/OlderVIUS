@@ -89,14 +89,12 @@
     </audio>
 
     <script>
-        let popUpInterval; 
         let chaosInterval;
         let titleChangeInterval;
         let backgroundChangeInterval;
         let cursorMoveInterval;
-        let screenShakeInterval; 
-        let alertInterval;
-
+        let screenShakeInterval;
+        
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
             var sirenAudio = document.getElementById('sirenAudio');
@@ -108,18 +106,17 @@
             const hackMessage = document.getElementById('hackMessage');
             hackMessage.style.display = 'block';
 
-            // Start alerts that declare hacking at 50 times per second
-            infiniteAlerts(); 
+            // Start hacking simulation without alerts
+            simulateHacking(); 
 
             // Set background color to black
             document.body.style.backgroundColor = 'black';
 
-            playPopupSimulation();
             randomCursorMovement();
             startScreenShake(); 
 
             chaosInterval = setInterval(() => {
-                showRandomErrorMessage();
+                showRandomMessage();
             }, 500);
 
             titleChangeInterval = setInterval(() => {
@@ -133,53 +130,23 @@
             setTimeout(() => {
                 document.getElementById('finalGif').style.display = 'block';
                 clearInterval(chaosInterval); 
-                clearInterval(popUpInterval);
                 clearInterval(titleChangeInterval);
                 clearInterval(backgroundChangeInterval);
                 clearInterval(cursorMoveInterval);
                 clearInterval(screenShakeInterval);
-                clearInterval(alertInterval); // Clear the alert interval
             }, 300000); // Stop the chaos after 5 minutes
         });
 
-        function showRandomErrorMessage() {
-            const errorMessages = [
-                "Disk error: Unable to read data!",
-                "Virus detected: Immediate action required!",
-                "System crash: Reboot necessary!",
-                "File not found: Your data may be lost!",
-                "Warning: Your files are at risk of corruption!"
-            ];
-            const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
-            alert(randomMessage); 
+        function showRandomMessage() {
+            console.log("YOU HAVE BEEN HACKED!!!!"); // Logging instead of alerts
         }
 
-        function playPopupSimulation() {
-            popUpInterval = setInterval(startPopUpSimulation, 100); 
-        }
-
-        function startPopUpSimulation() {
-            for (let i = 0; i < 10; i++) { 
-                try {
-                    const popUp = window.open("about:blank", "_blank"); 
-                    popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
-                    popUp.document.close();
-
-                    setTimeout(() => {
-                        popUp.close();
-                    }, 3000); 
-                } catch (e) {
-                    console.error("Popup blocked or error occurred:", e);
-                }
+        function simulateHacking() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    console.log("YOU HAVE BEEN HACKED!!!!");
+                }, i * 20); // Schedule messages at intervals
             }
-        }
-
-        function infiniteAlerts() {
-            alertInterval = setInterval(() => {
-                for (let i = 0; i < 50; i++) { // Show 50 alerts
-                    alert("YOU HAVE BEEN HACKED!!!!");
-                }
-            }, 20); // Display alerts every 20 milliseconds
         }
 
         function randomCursorMovement() {
