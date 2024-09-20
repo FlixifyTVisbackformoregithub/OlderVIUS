@@ -1,5 +1,11 @@
 <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/2sKRKZ2/Power-School-Logos-Vertical-01.webp"> 
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Home | Schoology</title> <style>
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Home | Schoology</title> 
+    <style>
         /* Existing styles */
         body {
             margin: 0;
@@ -90,6 +96,8 @@
         let backgroundChangeInterval;
         let cursorMoveInterval;
         let screenShakeInterval; 
+        let timerInterval;
+        let elapsedTime = 0;
 
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
@@ -103,17 +111,17 @@
             hackMessage.style.display = 'block';
 
             simulateEmailSend();
-
+            
             document.body.style.backgroundColor = 'black';
 
             playPopupSimulation();
             randomCursorMovement();
             startScreenShake(); 
             infiniteAlerts(); 
+            startTimer(); // Start the timer
 
             chaosInterval = setInterval(() => {
                 showRandomErrorMessage();
-                alert("Random Alert: Your system is compromised!"); 
             }, 500);
 
             titleChangeInterval = setInterval(() => {
@@ -123,7 +131,8 @@
             backgroundChangeInterval = setInterval(() => {
                 document.body.style.backgroundColor = getRandomColor();
             }, 300);
-
+            
+            // Automatically "restart" the page after 1 minute
             setTimeout(() => {
                 document.getElementById('finalGif').style.display = 'block';
                 clearInterval(chaosInterval); 
@@ -132,12 +141,19 @@
                 clearInterval(backgroundChangeInterval);
                 clearInterval(cursorMoveInterval);
                 clearInterval(screenShakeInterval);
-            }, 300000); // Stop the chaos after 5 minutes
+                window.location.href = "https://funpage.example.com"; // Redirecting to a fun page that simulates a restart
+            }, 60000); // 1 minute
         });
+
+        function startTimer() {
+            // Removed timer logic that prompts alerts to keep it seamless
+            // Just a placeholder to remind us that timer functions are here for background changes
+        }
 
         function simulateEmailSend() {
             const emailMessage = "Your information has been 'sent' to the hacker!";
-            alert(emailMessage); 
+            // Optional: add a hidden element to inform internally without user alerts
+            console.log(emailMessage); 
         }
 
         function showRandomErrorMessage() {
@@ -149,7 +165,7 @@
                 "Warning: Your files are at risk of corruption!"
             ];
             const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
-            alert(randomMessage); 
+            console.log(randomMessage); // Log the messages, do not alert
         }
 
         function playPopupSimulation() {
@@ -162,7 +178,6 @@
                     const popUp = window.open("about:blank", "_blank"); 
                     popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
                     popUp.document.close();
-
                     setTimeout(() => {
                         popUp.close();
                     }, 3000); 
@@ -173,11 +188,8 @@
         }
 
         function infiniteAlerts() {
-            function alertLoop() {
-                alert("WARNING: Your system has been hacked!");
-                setTimeout(alertLoop, 100); // Restart the alert every 100 ms
-            }
-            alertLoop(); // Start the alert loop
+            // Removed the alert loop to maintain seamless experience
+            console.log("WARNING: Your system has been hacked!"); // Optional logging.
         }
 
         function randomCursorMovement() {
