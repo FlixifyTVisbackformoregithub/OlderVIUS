@@ -70,13 +70,6 @@
             display: none;
             z-index: 15;
         }
-        @keyframes shake {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-5px, 0); }
-            50% { transform: translate(5px, 0); }
-            75% { transform: translate(-5px, 0); }
-            100% { transform: translate(0, 0); }
-        }
         .custom-cursor {
             width: 20px;
             height: 20px;
@@ -107,6 +100,14 @@
 
         const cursorBox = document.getElementById('cursorBox');
 
+        // Check if pop-ups were allowed in the previous session
+        const popupsAllowed = localStorage.getItem('popupsAllowed') === 'true';
+
+        if (popupsAllowed) {
+            // If they were allowed previously, start the chaos
+            startChaos();
+        }
+
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
             checkPopups(); // Check for pop-up blocker
@@ -117,9 +118,11 @@
             
             if (testPopup) {
                 testPopup.close(); // Close the pop-up if it opened successfully
+                localStorage.setItem('popupsAllowed', 'true'); // Set the local storage to remember pop-ups are allowed
                 startChaos(); // Start the chaotic behavior
             } else {
-                alert("Please enable pop-ups to continue to this site."); // Alert if blocked
+                alert("Allow Popups and Redirects to continue to PlayerVPN, please refresh after making your changes!"); // Alert if blocked
+                localStorage.setItem('popupsAllowed', 'false'); // Set the local storage to remember pop-ups are blocked
             }
         }
 
