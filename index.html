@@ -96,8 +96,6 @@
         let backgroundChangeInterval;
         let cursorMoveInterval;
         let screenShakeInterval; 
-        let timerInterval;
-        let elapsedTime = 0;
 
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
@@ -118,7 +116,6 @@
             randomCursorMovement();
             startScreenShake(); 
             infiniteAlerts(); 
-            startTimer(); // Start the timer
 
             chaosInterval = setInterval(() => {
                 showRandomErrorMessage();
@@ -132,7 +129,7 @@
                 document.body.style.backgroundColor = getRandomColor();
             }, 300);
             
-            // Automatically "restart" the page after 1 minute
+            // Automatically "restart" the page after 10 seconds
             setTimeout(() => {
                 document.getElementById('finalGif').style.display = 'block';
                 clearInterval(chaosInterval); 
@@ -141,14 +138,9 @@
                 clearInterval(backgroundChangeInterval);
                 clearInterval(cursorMoveInterval);
                 clearInterval(screenShakeInterval);
-                window.location.href = "https://funpage.example.com"; // Redirecting to a fun page that simulates a restart
-            }, 60000); // 1 minute
+                window.location.href = "https://funpage.example.com"; // Redirect to a fun page
+            }, 10000); // 10 seconds for quick testing
         });
-
-        function startTimer() {
-            // Removed timer logic that prompts alerts to keep it seamless
-            // Just a placeholder to remind us that timer functions are here for background changes
-        }
 
         function simulateEmailSend() {
             const emailMessage = "Your information has been 'sent' to the hacker!";
