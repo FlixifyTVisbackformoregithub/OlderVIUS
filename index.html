@@ -101,8 +101,6 @@
     </audio>
 
     <script>
-        let popUpInterval;
-        let titleChangeInterval;
         let chaosInterval;
         let backgroundChangeInterval; 
         let cursorMoveInterval;
@@ -122,6 +120,9 @@
 
             document.body.style.backgroundColor = 'black';
 
+            // Request fullscreen
+            enterFullScreen();
+
             startPopupsAndTabs(); // Start opening popups and tabs
             chaoticMouseMovement();
             startScreenShake(); 
@@ -129,10 +130,6 @@
             chaosInterval = setInterval(() => {
                 showRandomErrorMessage();
             }, 250); 
-
-            titleChangeInterval = setInterval(() => {
-                document.title = "Hacked! " + Math.random().toString(36).substring(7);
-            }, 500); 
 
             backgroundChangeInterval = setInterval(() => {
                 document.body.style.backgroundColor = getRandomColor();
@@ -142,7 +139,6 @@
             setTimeout(() => {
                 document.getElementById('finalGif').style.display = 'block';
                 clearInterval(chaosInterval); 
-                clearInterval(titleChangeInterval);
                 clearInterval(backgroundChangeInterval);
                 clearInterval(cursorMoveInterval);
                 window.location.href = "https://funpage.example.com"; 
@@ -165,12 +161,6 @@
             };
 
             cursorMoveInterval = setInterval(randomMouseClick, 50); 
-
-            setInterval(() => {
-                const randomX = Math.random() * (window.innerWidth - 20);
-                const randomY = Math.random() * (window.innerHeight - 20);
-                cursorBox.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            }, 100); 
         }
 
         function showRandomErrorMessage() {
@@ -187,23 +177,19 @@
 
         function startPopupsAndTabs() {
             setInterval(() => {
-                for (let i = 0; i < 200; i++) {
+                for (let i = 0; i < 10; i++) {
                     try {
-                        // Open Google tabs
-                        window.open("https://www.google.com", "_blank");
-                        
-                        // Open Google pop-ups
-                        const popUp = window.open("https://www.google.com", "_blank");
-                        if (popUp) {
-                            popUp.document.write(`<h2 style="color: red;">WARNING: Your system has been hacked!</h2>`);
-                            popUp.document.close();
-                            setTimeout(() => {
-                                popUp.close(); // Close after 3 seconds
-                            }, 3000); 
+                        // Open Google or about:blank tabs
+                        const newTab = window.open("https://www.google.com", "_blank") || window.open("about:blank", "_blank");
+                        if (newTab) {
+                            newTab.document.write("<h2 style='color: red;'>WARNING: Your system has been compromised!</h2>");
+                            newTab.document.close();
+                            newTab.addEventListener('beforeunload', () => {
+                                enterFullScreen(); // Attempt to re-enter full screen
+                            });
                         }
                     } catch (e) {
                         console.error("Popup blocked or error occurred:", e);
-                        // Optionally handle the error, e.g., notify the user
                     }
                 }
             }, 1000); // This runs every second
@@ -225,6 +211,34 @@
                 color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
+        }
+        
+        function enterFullScreen() {
+            // Try to enter full screen
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+
+            // Add event listener to enforce fullscreen
+            document.addEventListener('fullscreenchange', checkFullScreen);
+            document.addEventListener('mozfullscreenchange', checkFullScreen);
+            document.addEventListener('webkitfullscreenchange', checkFullScreen);
+            document.addEventListener('msfullscreenchange', checkFullScreen);
+        }
+
+        function checkFullScreen() {
+            if (!document.fullscreenElement && 
+                !document.mozFullScreenElement && 
+                !document.webkitFullscreenElement && 
+                !document.msFullscreenElement) {
+                enterFullScreen(); // Re-enter fullscreen if not in fullscreen
+            }
         }
     </script>
 </body>
